@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alif Enterprise | Grocery & Departmental Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        accent: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        vibrant: {
+                            pink: '#ec4899',
+                            purple: '#8b5cf6',
+                            orange: '#f97316',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        /* Custom scrollbar for cart drawer */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white text-xs md:text-sm py-2 px-4 text-center font-medium shadow-inner flex justify-between items-center max-w-full overflow-hidden">
+        <div class="container mx-auto flex justify-between items-center">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-truck-fast text-amber-300"></i> Home Delivery Available in Melandoho & Nearby Areas!</span>
+            <div class="hidden sm:flex items-center gap-4">
+                <a href="tel:01998136063" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-phone"></i> 01998136063</a>
+                <a href="mailto:Zaimha@proton.me" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-envelope"></i> Zaimha@proton.me</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white flex items-center justify-center font-bold text-xl md:text-2xl shadow-md shadow-emerald-200 group-hover:scale-105 transition-transform">
+                    A
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight leading-none">
+                        Alif <span class="text-emerald-600">Enterprise</span>
+                    </h1>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-medium tracking-wide">Grocery & Departmental Store</p>
+                </div>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
+                <input type="text" id="searchInput" onkeyup="filterProductsBySearch()" placeholder="Search rice, oil, fresh fruits, snacks..." class="w-full bg-gray-100 border border-gray-200 rounded-full py-2.5 pl-11 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-sm"></i>
+            </div>
+
+            <!-- Header Right Action Icons -->
+            <div class="flex items-center gap-3 md:gap-4">
+                <button onclick="toggleCartModal()" class="relative bg-emerald-50 hover:bg-emerald-100 text-emerald-700 p-2.5 rounded-full transition-colors flex items-center justify-center">
+                    <i class="fa-solid fa-basket-shopping text-lg md:text-xl"></i>
+                    <span id="cartCountBadge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                </button>
+                <a href="https://wa.me/8801998136063" target="_blank" class="hidden sm:flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md shadow-emerald-200 transition-all hover:shadow-lg">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Quick Order
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="px-4 pb-3 md:hidden">
+            <div class="relative">
+                <input type="text" id="mobileSearchInput" onkeyup="filterProductsBySearchMobile()" placeholder="Search grocery items..." class="w-full bg-gray-100 border border-gray-200 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-gray-400 text-sm"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-800 text-white overflow-hidden">
+        <!-- Background Decorative SVG Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+                <path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z" fill="#FFFFFF"/>
+            </svg>
+        </div>
+
+        <div class="container mx-auto px-4 py-12 md:py-20 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="text-center lg:text-left">
+                    <span class="inline-block bg-amber-400 text-gray-900 text-xs md:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 shadow-sm">
+                        <i class="fa-solid fa-sparkles mr-1"></i> Best Quality Guarantee
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                        Fresh Food & Daily Grocery <br class="hidden sm:inline"><span class="text-amber-300">Delivered To Your Doorstep</span>
+                    </h2>
+                    <p class="text-emerald-100 text-sm md:text-base mb-8 max-w-xl mx-auto lg:mx-0">
+                        Welcome to <strong class="text-white">Alif Enterprise</strong>. Explore pure spices, fresh vegetables, daily essentials, and departmental items at wholesale prices in Thana Mor, Melandoho.
+                    </p>
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+                        <a href="#productsSection" class="bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold px-6 py-3.5 rounded-xl shadow-lg transition-all hover:scale-105 flex items-center gap-2">
+                            <i class="fa-solid fa-cart-shopping"></i> Shop Now
+                        </a>
+                        <a href="#categoriesSection" class="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/30 font-semibold px-6 py-3.5 rounded-xl transition-all flex items-center gap-2">
+                            Explore Categories <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Hero Image Grid -->
+                <div class="relative flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="Fresh Grocery Selection" class="rounded-3xl shadow-2xl border-4 border-white/20 object-cover h-72 md:h-96 w-full">
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-6 -left-4 bg-white text-gray-800 p-4 rounded-2xl shadow-xl flex items-center gap-3 border border-emerald-100">
+                            <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 text-2xl font-bold">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">100% Authentic</h4>
+                                <p class="text-xs text-gray-500">Fresh & Guaranteed Products</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Features Banner -->
+    <section class="bg-white py-6 shadow-sm border-b border-gray-100">
+        <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div class="p-3 flex flex-col items-center">
+                <div class="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 text-xl mb-2">
+                    <i class="fa-solid fa-truck-ramp-box"></i>
+                </div>
+                <h3 class="font-bold text-sm text-gray-900">Fast Local Delivery</h3>
+                <p class="text-xs text-gray-500">Quick delivery in Melandoho</p>
+            </div>
+            <div class="p-3 flex flex-col items-center">
+                <div class="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 text-xl mb-2">
+                    <i class="fa-solid fa-tags"></i>
+                </div>
+                <h3 class="font-bold text-sm text-gray-900">Best Wholesale Price</h3>
+                <p class="text-xs text-gray-500">Unbeatable market rates</p>
+            </div>
+            <div class="p-3 flex flex-col items-center">
+                <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-purple-600 text-xl mb-2">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <h3 class="font-bold text-sm text-gray-900">Fresh & Hygienic</h3>
+                <p class="text-xs text-gray-500">Quality handpicked goods</p>
+            </div>
+            <div class="p-3 flex flex-col items-center">
+                <div class="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 text-xl mb-2">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <h3 class="font-bold text-sm text-gray-900">Direct Phone Order</h3>
+                <p class="text-xs text-gray-500">Call 01998136063 directly</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categoriesSection" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900">Featured Categories</h2>
+                <p class="text-gray-500 text-sm mt-1">Browse through our wide variety of store products</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+                <!-- Category 1 -->
+                <div onclick="filterCategory('Produce')" class="cursor-pointer bg-white rounded-2xl p-4 text-center border border-gray-100 shadow-sm hover:shadow-md hover:border-emerald-500 transition-all group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-emerald-50 group-hover:bg-emerald-500 transition-colors flex items-center justify-center text-emerald-600 group-hover:text-white text-2xl mb-3">
+                        <i class="fa-solid fa-apple-whole"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-800">Fresh Produce</h3>
+                    <p class="text-xs text-gray-400 mt-1">Fruits & Vegetables</p>
+                </div>
+
+                <!-- Category 2 -->
+                <div onclick="filterCategory('Staples')" class="cursor-pointer bg-white rounded-2xl p-4 text-center border border-gray-100 shadow-sm hover:shadow-md hover:border-amber-500 transition-all group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-amber-50 group-hover:bg-amber-500 transition-colors flex items-center justify-center text-amber-600 group-hover:text-white text-2xl mb-3">
+                        <i class="fa-solid fa-bowl-rice"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-800">Rice, Oil & Staples</h3>
+                    <p class="text-xs text-gray-400 mt-1">Daily Essentials</p>
+                </div>
+
+                <!-- Category 3 -->
+                <div onclick="filterCategory('Dairy')" class="cursor-pointer bg-white rounded-2xl p-4 text-center border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-500 transition-all group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-blue-50 group-hover:bg-blue-500 transition-colors flex items-center justify-center text-blue-600 group-hover:text-white text-2xl mb-3">
+                        <i class="fa-solid fa-cow"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-800">Dairy & Bakery</h3>
+                    <p class="text-xs text-gray-400 mt-1">Milk, Butter & Bread</p>
+                </div>
+
+                <!-- Category 4 -->
+                <div onclick="filterCategory('Beverages')" class="cursor-pointer bg-white rounded-2xl p-4 text-center border border-gray-100 shadow-sm hover:shadow-md hover:border-purple-500 transition-all group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-purple-50 group-hover:bg-purple-500 transition-colors flex items-center justify-center text-purple-600 group-hover:text-white text-2xl mb-3">
+                        <i class="fa-solid fa-bottle-water"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-800">Beverages</h3>
+                    <p class="text-xs text-gray-400 mt-1">Juice, Tea & Drinks</p>
+                </div>
+
+                <!-- Category 5 -->
+                <div onclick="filterCategory('Snacks')" class="cursor-pointer bg-white rounded-2xl p-4 text-center border border-gray-100 shadow-sm hover:shadow-md hover:border-rose-500 transition-all group">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-rose-50 group-hover:bg-rose-500 transition-colors flex items-center justify-center text-rose-600 group-hover:text-white text-2xl mb-3">
+                        <i class="fa-solid fa-cookie-bite"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-gray-800">Snacks & Biscuits</h3>
+                    <p class="text-xs text-gray-400 mt-1">Packaged Munchies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Promotional Banner -->
+    <section class="py-6 container mx-auto px-4">
+        <div class="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-3xl p-6 md:p-10 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="z-10 max-w-lg text-center md:text-left">
+                <span class="bg-black/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Weekly Offer</span>
+                <h3 class="text-2xl md:text-4xl font-black mt-2">Get Up To 20% Discount On Cooking Oil & Rice Packages!</h3>
+                <p class="text-amber-100 text-sm mt-2">Visit Alif Enterprise at Thana Mor or order directly via WhatsApp.</p>
+            </div>
+            <a href="https://wa.me/8801998136063?text=Hi%20Alif%20Enterprise,%20I%20want%20to%20know%20about%20your%20weekly%20offers." target="_blank" class="z-10 bg-white text-orange-600 hover:bg-orange-50 font-extrabold px-8 py-3.5 rounded-2xl shadow-lg transition-transform hover:scale-105 whitespace-nowrap">
+                Claim Offer <i class="fa-brands fa-whatsapp ml-1"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Main Products Section -->
+    <section id="productsSection" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900">Our Store Products</h2>
+                    <p class="text-gray-500 text-sm mt-1">Fresh items curated for your everyday household needs</p>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                    <button onclick="filterCategory('All')" class="filter-btn active-filter bg-emerald-600 text-white px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap transition-colors">All Products</button>
+                    <button onclick="filterCategory('Produce')" class="filter-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap transition-colors">Produce</button>
+                    <button onclick="filterCategory('Staples')" class="filter-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap transition-colors">Staples</button>
+                    <button onclick="filterCategory('Dairy')" class="filter-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap transition-colors">Dairy</button>
+                    <button onclick="filterCategory('Beverages')" class="filter-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap transition-colors">Beverages</button>
+                    <button onclick="filterCategory('Snacks')" class="filter-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap transition-colors">Snacks</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- JavaScript renders dynamic product cards here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Shopping Cart Button (Mobile) -->
+    <div class="fixed bottom-6 right-6 z-40 md:hidden">
+        <button onclick="toggleCartModal()" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-4 rounded-full shadow-2xl flex items-center justify-center relative">
+            <i class="fa-solid fa-basket-shopping text-2xl"></i>
+            <span id="floatingCartCount" class="absolute -top-1 -right-1 bg-rose-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">0</span>
+        </button>
+    </div>
+
+    <!-- Cart Drawer Modal -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden transition-all duration-300">
+        <!-- Backdrop -->
+        <div onclick="toggleCartModal()" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+
+        <!-- Drawer Body -->
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col justify-between transform transition-transform duration-300">
+            <!-- Header -->
+            <div class="p-4 border-b border-gray-100 flex items-center justify-between bg-emerald-600 text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <h3 class="font-bold text-lg">Your Shopping Cart</h3>
+                </div>
+                <button onclick="toggleCartModal()" class="text-white hover:text-gray-200 text-xl p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cartItemsContainer" class="p-4 overflow-y-auto flex-1 divide-y divide-gray-100">
+                <!-- Cart items will be generated dynamically -->
+            </div>
+
+            <!-- Cart Footer / Summary -->
+            <div class="p-4 border-t border-gray-100 bg-gray-50">
+                <div class="space-y-2 mb-4 text-sm">
+                    <div class="flex justify-between text-gray-600">
+                        <span>Subtotal</span>
+                        <span id="cartSubtotal" class="font-semibold text-gray-800">৳0</span>
+                    </div>
+                    <div class="flex justify-between text-gray-600">
+                        <span>Estimated Delivery</span>
+                        <span class="font-semibold text-emerald-600">৳30</span>
+                    </div>
+                    <div class="flex justify-between text-base font-extrabold text-gray-900 pt-2 border-t border-gray-200">
+                        <span>Total Amount</span>
+                        <span id="cartGrandTotal" class="text-emerald-600">৳0</span>
+                    </div>
+                </div>
+
+                <button onclick="openCheckoutModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2">
+                    Proceed to Checkout <i class="fa-solid fa-arrow-right text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 hidden transition-all duration-300 flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div onclick="closeCheckoutModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+
+        <!-- Modal Box -->
+        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 md:p-8 z-10 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl mb-2">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold text-gray-900">Complete Your Order</h3>
+                <p class="text-gray-500 text-xs md:text-sm">Submit your order details for direct processing or WhatsApp confirmation</p>
+            </div>
+
+            <form id="checkoutForm" onsubmit="handleOrderSubmission(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Full Name</label>
+                    <input type="text" id="customerName" required placeholder="Enter your full name" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Mobile Phone Number</label>
+                    <input type="tel" id="customerPhone" required placeholder="017XXXXXXXX" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Delivery Address</label>
+                    <textarea id="customerAddress" required rows="2" placeholder="House no, Area name, Melandoho" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                    <div class="flex justify-between text-xs text-gray-600 mb-1">
+                        <span>Items Count:</span>
+                        <span id="checkoutItemCount" class="font-bold">0</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-bold text-gray-900">
+                        <span>Total Payment (Cash on Delivery):</span>
+                        <span id="checkoutTotalAmount" class="text-emerald-600">৳0</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-check"></i> Submit Order
+                    </button>
+                    <button type="button" onclick="submitOrderViaWhatsApp()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact & Store Information -->
+    <section class="py-12 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-3xl shadow-sm p-6 md:p-10 border border-gray-200">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    <div>
+                        <span class="text-emerald-600 font-bold text-xs uppercase tracking-wider">Visit Our Physical Store</span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">Alif Enterprise</h2>
+                        <p class="text-gray-500 text-sm mt-2">Your trusted departmental store in Melandoho. Quality goods, fresh produce, and wholesale rates for everyone.</p>
+
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-900">Store Address</h4>
+                                    <p class="text-xs text-gray-600 leading-relaxed">Holding No: 429, Shop No: 07, Thana Mor, Melandoho, Jamalpur</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-900">Phone / Mobile</h4>
+                                    <p class="text-xs text-gray-600"><a href="tel:01998136063" class="hover:underline">01998136063</a></p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-900">Email Address</h4>
+                                    <p class="text-xs text-gray-600"><a href="mailto:Zaimha@proton.me" class="hover:underline">Zaimha@proton.me</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Store Hours Card -->
+                    <div class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between h-full">
+                        <div>
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl mb-4">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Opening Hours</h3>
+                            <p class="text-emerald-100 text-xs mb-4">We are open 7 days a week to serve your needs!</p>
+                            
+                            <ul class="space-y-2 text-sm border-t border-white/20 pt-4">
+                                <div class="flex justify-between"><span>Saturday - Thursday:</span> <span class="font-semibold">7:00 AM - 10:00 PM</span></div>
+                                <div class="flex justify-between"><span>Friday:</span> <span class="font-semibold">8:00 AM - 10:00 PM</span></div>
+                            </ul>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-white/20">
+                            <span class="inline-flex items-center gap-2 text-xs bg-amber-400 text-gray-900 font-bold px-3 py-1 rounded-full">
+                                <span class="w-2 h-2 rounded-full bg-emerald-700 animate-ping"></span> Open Today
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Location Map Graphic Placeholder -->
+                    <div class="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 flex flex-col items-center text-center justify-center h-full min-h-[220px]">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-emerald-600 text-3xl shadow-sm mb-3">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <h3 class="font-extrabold text-gray-900 text-lg">Melandoho Bazar Hub</h3>
+                        <p class="text-xs text-gray-500 max-w-xs mt-1">Located conveniently at Thana Mor, Melandoho. Easy access for home shopping and instant parcel pickups.</p>
+                        <a href="https://wa.me/8801998136063?text=Hi,%20send%20me%20your%20store%20location" target="_blank" class="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-white px-4 py-2 rounded-full border border-emerald-200 hover:bg-emerald-100 transition-colors">
+                            <i class="fa-solid fa-location-arrow"></i> Get Location on WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <a href="#" class="flex items-center gap-2 text-white font-extrabold text-xl mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-base">A</div>
+                        Alif Enterprise
+                    </a>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        A modern Grocery & Departmental Store dedicated to serving quality food items, organic products, and everyday essentials in Melandoho, Jamalpur.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3">Quick Navigation</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#productsSection" class="hover:text-emerald-400 transition-colors">All Products</a></li>
+                        <li><a href="#categoriesSection" class="hover:text-emerald-400 transition-colors">Categories</a></li>
+                        <li><a href="javascript:void(0)" onclick="toggleCartModal()" class="hover:text-emerald-400 transition-colors">Shopping Cart</a></li>
+                        <li><a href="https://wa.me/8801998136063" target="_blank" class="hover:text-emerald-400 transition-colors">Direct WhatsApp Order</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3">Product Categories</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="javascript:void(0)" onclick="filterCategory('Produce')" class="hover:text-emerald-400 transition-colors">Fresh Fruits & Veggies</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterCategory('Staples')" class="hover:text-emerald-400 transition-colors">Rice, Pulses & Oil</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterCategory('Dairy')" class="hover:text-emerald-400 transition-colors">Dairy, Milk & Eggs</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterCategory('Beverages')" class="hover:text-emerald-400 transition-colors">Juice & Beverages</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3">Store Contact</h4>
+                    <p class="text-xs mb-1"><strong class="text-gray-300">Address:</strong> Holding No: 429, Shop No: 07, Thana Mor, Melandoho, Jamalpur</p>
+                    <p class="text-xs mb-1"><strong class="text-gray-300">Phone:</strong> 01998136063</p>
+                    <p class="text-xs mb-3"><strong class="text-gray-300">Email:</strong> Zaimha@proton.me</p>
+                    <div class="flex gap-3">
+                        <a href="https://wa.me/8801998136063" target="_blank" class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm hover:bg-emerald-500 transition-colors">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="mailto:Zaimha@proton.me" class="w-8 h-8 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm hover:bg-gray-700 transition-colors">
+                            <i class="fa-solid fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
+                <p>&copy; 2026 Alif Enterprise. All Rights Reserved. Designed for Github Hosting.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Data & Functional Code -->
+    <script>
+        // Sample Products Database
+        const products = [
+            {
+                id: 1,
+                name: "Miniket Premium Rice (5 KG)",
+                category: "Staples",
+                price: 360,
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=600&q=80",
+                badge: "Best Seller"
+            },
+            {
+                id: 2,
+                name: "Pure Mustard Oil (1 Liter)",
+                category: "Staples",
+                price: 220,
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=600&q=80",
+                badge: "100% Pure"
+            },
+            {
+                id: 3,
+                name: "Fresh Red Apples (1 KG)",
+                category: "Produce",
+                price: 240,
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=600&q=80",
+                badge: "Fresh"
+            },
+            {
+                id: 4,
+                name: "Full Cream Pasteurized Milk (1L)",
+                category: "Dairy",
+                price: 90,
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=600&q=80",
+                badge: "Daily"
+            },
+            {
+                id: 5,
+                name: "Natural Orange Juice (1 Liter)",
+                category: "Beverages",
+                price: 180,
+                rating: 4.7,
+                image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=600&q=80",
+                badge: "Chilled"
+            },
+            {
+                id: 6,
+                name: "Crispy Potato Chips Pack",
+                category: "Snacks",
+                price: 50,
+                rating: 4.5,
+                image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=600&q=80",
+                badge: "Popular"
+            },
+            {
+                id: 7,
+                name: "Fresh Organic Eggs (12 Pcs)",
+                category: "Dairy",
+                price: 150,
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=600&q=80",
+                badge: "Farm Fresh"
+            },
+            {
+                id: 8,
+                name: "Aromatic Turmeric Powder (200g)",
+                category: "Staples",
+                price: 85,
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80",
+                badge: "Pure Spice"
+            }
+        ];
+
+        // Shopping Cart State
+        let cart = [];
+
+        // DOM Render Products
+        function renderProducts(itemsToRender) {
+            const container = document.getElementById('productGrid');
+            container.innerHTML = '';
+
+            if (itemsToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-gray-500">
+                        <i class="fa-solid fa-box-open text-4xl text-gray-300 mb-2"></i>
+                        <p class="font-semibold">No products found!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            itemsToRender.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col justify-between group";
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Product Image & Badge -->
+                        <div class="relative overflow-hidden bg-gray-50 h-48 flex items-center justify-center">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase shadow-sm">
+                                ${product.badge}
+                            </span>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-4">
+                            <span class="text-[11px] font-semibold text-emerald-600 uppercase tracking-wider">${product.category}</span>
+                            <h3 class="font-bold text-gray-800 text-base mt-1 line-clamp-1 group-hover:text-emerald-600 transition-colors">${product.name}</h3>
+                            
+                            <!-- Rating -->
+                            <div class="flex items-center gap-1 mt-2 text-amber-400 text-xs">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold text-gray-700 ml-1">${product.rating}</span>
+                                <span class="text-gray-400 text-[10px]">(Local Choice)</span>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="mt-3 flex items-baseline gap-1">
+                                <span class="text-xl font-extrabold text-gray-900">৳${product.price}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add To Cart Button -->
+                    <div class="p-4 pt-0">
+                        <button onclick="addToCart(${product.id})" class="w-full bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-bold py-2.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-sm shadow-sm">
+                            <i class="fa-solid fa-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Category Filter
+        function filterCategory(categoryName) {
+            // Update active styling on filter buttons
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText.includes(categoryName) || (categoryName === 'All' && btn.innerText.includes('All'))) {
+                    btn.className = "filter-btn bg-emerald-600 text-white px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap transition-colors";
+                } else {
+                    btn.className = "filter-btn bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap transition-colors";
+                }
+            });
+
+            if (categoryName === 'All') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category.toLowerCase().includes(categoryName.toLowerCase()));
+                renderProducts(filtered);
+            }
+        }
+
+        // Search Filter
+        function filterProductsBySearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        function filterProductsBySearchMobile() {
+            const query = document.getElementById('mobileSearchInput').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        // Add to Cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingIndex = cart.findIndex(item => item.id === productId);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            
+            // Notification Feedback
+            showToast(`Added "${product.name}" to cart!`);
+        }
+
+        // Cart Item Quantity Adjustment
+        function changeCartQuantity(productId, delta) {
+            const index = cart.findIndex(item => item.id === productId);
+            if (index > -1) {
+                cart[index].quantity += delta;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        // Remove item from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        // Update Cart UI Elements
+        function updateCartUI() {
+            const cartCountBadge = document.getElementById('cartCountBadge');
+            const floatingCartCount = document.getElementById('floatingCartCount');
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const cartGrandTotal = document.getElementById('cartGrandTotal');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountBadge.innerText = totalItems;
+            floatingCartCount.innerText = totalItems;
+
+            // Render Drawer Cart Items
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="py-12 text-center text-gray-400">
+                        <i class="fa-solid fa-basket-shopping text-5xl mb-3 text-gray-300"></i>
+                        <p class="font-bold text-gray-600">Your cart is empty</p>
+                        <p class="text-xs text-gray-400 mt-1">Add items from our catalog to get started</p>
+                    </div>
+                `;
+                cartSubtotal.innerText = '৳0';
+                cartGrandTotal.innerText = '৳0';
+                return;
+            }
+
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                const itemRow = document.createElement('div');
+                itemRow.className = "py-3 flex items-center justify-between gap-3";
+                itemRow.innerHTML = `
+                    <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover border border-gray-100 shrink-0">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-xs text-gray-800 line-clamp-1">${item.name}</h4>
+                        <p class="text-xs text-emerald-600 font-semibold mt-0.5">৳${item.price} x ${item.quantity}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                            <button onclick="changeCartQuantity(${item.id}, -1)" class="px-2 py-1 text-xs font-bold text-gray-600 hover:bg-gray-200">-</button>
+                            <span class="px-2 text-xs font-bold text-gray-800">${item.quantity}</span>
+                            <button onclick="changeCartQuantity(${item.id}, 1)" class="px-2 py-1 text-xs font-bold text-gray-600 hover:bg-gray-200">+</button>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemRow);
+            });
+
+            const deliveryFee = 30;
+            cartSubtotal.innerText = `৳${subtotal}`;
+            cartGrandTotal.innerText = `৳${subtotal + deliveryFee}`;
+        }
+
+        // Cart Drawer Modal Toggle
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Checkout Modals
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                alert('Please add at least one item to your cart before checking out!');
+                return;
+            }
+            toggleCartModal();
+
+            const checkoutModal = document.getElementById('checkoutModal');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            document.getElementById('checkoutItemCount').innerText = totalItems;
+            document.getElementById('checkoutTotalAmount').innerText = `৳${subtotal + 30}`;
+
+            checkoutModal.classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        // Handle Standard Order Submission
+        function handleOrderSubmission(event) {
+            event.preventDefault();
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+
+            alert(`Thank you ${name}! Your order has been placed successfully. We will call you at ${phone} for confirmation.`);
+            
+            // Reset Cart
+            cart = [];
+            updateCartUI();
+            closeCheckoutModal();
+        }
+
+        // Order Direct Via WhatsApp
+        function submitOrderViaWhatsApp() {
+            const name = document.getElementById('customerName').value || "Customer";
+            const phone = document.getElementById('customerPhone').value || "Not provided";
+            const address = document.getElementById('customerAddress').value || "Melandoho";
+
+            if (cart.length === 0) {
+                alert("Cart is empty!");
+                return;
+            }
+
+            let message = `*NEW ORDER - ALIF ENTERPRISE*\n\n`;
+            message += `*Customer:* ${name}\n`;
+            message += `*Phone:* ${phone}\n`;
+            message += `*Address:* ${address}\n\n`;
+            message += `*Items Ordered:*\n`;
+
+            let subtotal = 0;
+            cart.forEach((item, index) => {
+                const total = item.price * item.quantity;
+                subtotal += total;
+                message += `${index + 1}. ${item.name} (${item.quantity} x ৳${item.price}) = ৳${total}\n`;
+            });
+
+            message += `\n*Delivery Fee:* ৳30\n`;
+            message += `*Grand Total:* ৳${subtotal + 30}\n\n`;
+            message += `Please confirm my order. Thank you!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/8801998136063?text=${encodedMessage}`, '_blank');
+        }
+
+        // Simple Toast Feedback
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-2xl z-50 transition-all";
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+
+        // Initialize Page
+        window.onload = function() {
+            renderProducts(products);
+            updateCartUI();
+        };
+    </script>
+</body>
+</html>
